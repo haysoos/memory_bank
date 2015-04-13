@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_margin="5dp"
+        android:text="ID"/>
+
+    <TextView
+        android:id="@+id/tvTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_margin="5dp"
+        android:text="Timestamp"
+        android:layout_toRightOf="@+id/tvId"/>
+
+    <TextView
+        android:id="@+id/tvLatitude"
+        android:layout_below="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="latitude"/>
+
+    <TextView
+        android:id="@+id/tvLongitude"
+        android:layout_toRightOf="@id/tvLatitude"
+        android:layout_below="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="longitude"/>
+
+    <TextView
+        android:id="@+id/tvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_margin="5dp"
+        android:layout_below="@id/tvLatitude"
+        android:text="Value"/>
+
+</RelativeLayout>
