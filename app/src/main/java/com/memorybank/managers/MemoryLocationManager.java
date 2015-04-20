@@ -38,6 +38,7 @@ public class MemoryLocationManager {
             @Override
             public void onLocationChanged(Location location) {
                 mLocation = location;
+                mLocationManager.removeUpdates(mLocationListener);
             }
 
             @Override

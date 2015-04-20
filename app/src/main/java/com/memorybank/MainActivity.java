@@ -24,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
     private TextView mSaveButton;
     private EditText mMemoryValueEditText;
     private TextView mMemoriesListTextView;
+    private TextView mTagsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
         mMemoryValueEditText = (EditText) findViewById(R.id.etMemoryValue);
         mMemoriesListTextView = (TextView) findViewById(R.id.tvMemoriesList);
         mSaveButton = (TextView) findViewById(R.id.tvSave);
+        mTagsTextView = (TextView) findViewById(R.id.tvTags);
 
         initListeners();
     }
@@ -76,6 +78,14 @@ public class MainActivity extends ActionBarActivity {
         });
 
         mMemoriesListTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MemoriesListActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        mTagsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MemoriesListActivity.class);

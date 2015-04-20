@@ -22,10 +22,11 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/tvMemory"
+        android:id="@+id/tvTags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Memory"
+        android:text="Tags"
+        android:textSize="35sp"
         android:layout_below="@+id/etMemorySearch"
         android:layout_marginTop="20dp"/>
 
@@ -33,7 +34,7 @@
         android:id="@+id/etMemoryValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvMemory"
+        android:layout_below="@+id/tvTags"
         android:minLines="15"/>
 
     <TextView

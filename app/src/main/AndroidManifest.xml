@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.memorybank" >
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />"
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+"
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,6 +21,10 @@
         <activity
             android:name=".MemoriesListActivity"
             android:label="@string/title_activity_memories_list" >
+        </activity>
+        <activity
+            android:name=".TagsActivity"
+            android:label="@string/title_activity_tags" >
         </activity>
     </application>
 
