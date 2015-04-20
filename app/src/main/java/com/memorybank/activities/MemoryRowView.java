@@ -1,4 +1,4 @@
-package com.memorybank;
+package com.memorybank.activities;
 
 import android.content.Context;
 import android.widget.LinearLayout;

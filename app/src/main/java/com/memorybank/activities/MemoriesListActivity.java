@@ -1,11 +1,15 @@
-package com.memorybank;
+package com.memorybank.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.memorybank.R;
 import com.memorybank.adapters.MemoriesAdapter;
 import com.memorybank.database.MemoriesDatabase;
 
@@ -23,6 +27,15 @@ public class MemoriesListActivity extends ActionBarActivity {
         mMemoriesListView = (ListView) findViewById(R.id.lvMemories);
         mMemoriesAdapter = new MemoriesAdapter(this, MemoriesDatabase.getInstance().getMemories());
         mMemoriesListView.setAdapter(mMemoriesAdapter);
+
+        mMemoriesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MemoriesListActivity.this, TagsActivity.class);
+                intent.putExtra(TagsActivity.EXTRA_MEMORY_ID, id);
+                MemoriesListActivity.this.startActivity(intent);
+            }
+        });
 
     }
 

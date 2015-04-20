@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class MemoriesDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "memories";
 
     public MemoriesDatabaseHelper(Context context) {
@@ -20,11 +20,12 @@ public class MemoriesDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SqlQueries.CREATE_MEMORIES_TABLE);
         db.execSQL(SqlQueries.CREATE_MEMORY_TAGS_TABLE);
+        db.execSQL(SqlQueries.CREATE_MEMORY_TAGS_MAP_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.delete(SqlQueries.MEMORY_TAGS_TABLE, null, null);
-        db.execSQL(SqlQueries.CREATE_MEMORY_TAGS_TABLE);
+        db.execSQL(SqlQueries.DELETE_MEMORY_TAGS_MAP_TABLE);
+        db.execSQL(SqlQueries.CREATE_MEMORY_TAGS_MAP_TABLE);
     }
 }

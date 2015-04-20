@@ -27,4 +27,22 @@
         android:layout_below="@id/tvId"
         android:text="Description"/>
 
+    <TextView
+        android:id="@+id/tvIsPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_margin="5dp"
+        android:layout_below="@id/tvDescription"
+        android:text="False"/>
+
+    <TextView
+        android:id="@+id/tvTagTimeStamp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@id/tvIsPrivate"
+        android:text="Tag Timestamp"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

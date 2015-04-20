@@ -31,6 +31,7 @@ public class MemoriesAdapter extends CursorAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.memory_row_view, parent, false);
+
         return rowView;
     }
 
@@ -48,6 +49,5 @@ public class MemoriesAdapter extends CursorAdapter {
         latitude.setText(cursor.getDouble(2) + ", ");
         longitude.setText(cursor.getDouble(3) + "");
         value.setText(cursor.getString(4));
-
     }
 }

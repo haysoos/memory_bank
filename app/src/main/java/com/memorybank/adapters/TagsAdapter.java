@@ -9,9 +9,14 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
+import com.memorybank.activities.TagsActivity;
+
+import org.w3c.dom.Text;
+
+import java.util.Date;
 
 /**
- * Created by medrano on 4/19/15.
+ * Created by Jesus Medrano on 4/19/15.
  */
 public class TagsAdapter extends CursorAdapter {
 
@@ -36,10 +41,20 @@ public class TagsAdapter extends CursorAdapter {
         TextView id = (TextView) view.findViewById(R.id.tvId);
         TextView name = (TextView) view.findViewById(R.id.tvName);
         TextView description = (TextView) view.findViewById(R.id.tvDescription);
+        TextView isPrivate = (TextView) view.findViewById(R.id.tvIsPrivate);
+        TextView timestamp = (TextView) view.findViewById(R.id.tvTagTimeStamp);
 
         id.setText(cursor.getInt(0) + "");
         name.setText(cursor.getString(1));
         description.setText(cursor.getString(2));
+        if (cursor.getInt(3) > 0) {
+            isPrivate.setText("True");
+        } else {
+            isPrivate.setText("False");
+        }
+        Date date = new Date(cursor.getLong(4));
+        timestamp.setText(date.toString());
+
 
     }
 }

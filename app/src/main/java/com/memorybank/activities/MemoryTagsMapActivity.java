@@ -1,24 +1,25 @@
-package com.memorybank;
+package com.memorybank.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.memorybank.R;
 
-public class TagsActivity extends ActionBarActivity {
+public class MemoryTagsMapActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tags);
+        setContentView(R.layout.activity_memory_tags_map);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tags, menu);
+        getMenuInflater().inflate(R.menu.menu_memory_tags_map, menu);
         return true;
     }
 

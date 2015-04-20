@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.memorybank.CreateTagActivity">
+
+    <TextView
+        android:id="@+id/tvTagName"
+        android:text="Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/etTagName"
+        android:layout_toRightOf="@+id/tvTagName"
+        android:layout_alignBaseline="@id/tvTagName"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="10dp"
+        android:text="Description"
+        android:layout_below="@id/tvTagName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/etDescription"
+        android:layout_toRightOf="@id/tvDescription"
+        android:layout_alignBaseline="@id/tvDescription"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvPrivateTag"
+        android:text="is Private Tag"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Switch
+        android:id="@+id/privateSwitch"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@id/tvPrivateTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvCreate"
+        android:text="Create"
+        android:padding="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -13,7 +13,7 @@ public class MemoryLocationManager {
 
     public static final String TAG = "MemoryLocationManager";
     public static final int GPS_EXPIRATION_THRESHOLD = 1000 * 60 * 5;
-    public static final int MIN_INTERVAL_GPS_UPDATES = 1000 * 60 * 1;
+    public static final int MIN_INTERVAL_GPS_UPDATES = 1000 * 10;
     private static LocationManager mLocationManager;
     private static Location mLocation;
     private static MemoryLocationManager instance = new MemoryLocationManager();
@@ -38,12 +38,13 @@ public class MemoryLocationManager {
             @Override
             public void onLocationChanged(Location location) {
                 mLocation = location;
+                android.util.Log.i(TAG, "Updating location " + location);
                 mLocationManager.removeUpdates(mLocationListener);
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
+                android.util.Log.i(TAG, "Updating status ");
             }
 
             @Override
