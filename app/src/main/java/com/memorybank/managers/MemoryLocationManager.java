@@ -27,7 +27,7 @@ public class MemoryLocationManager {
 
         mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location networkLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (mLocation == null || mLocation.getTime() > networkLocation.getTime()) {
+        if (mLocation == null || (networkLocation != null && mLocation.getTime() > networkLocation.getTime())) {
             mLocation = networkLocation;
         }
 

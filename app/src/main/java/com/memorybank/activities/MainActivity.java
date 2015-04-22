@@ -133,9 +133,35 @@ public class MainActivity extends ActionBarActivity {
                 }
                 Toast.makeText(getBaseContext(), "Saved database to sdcard", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.action_use_backup_db:
+                try {
+                    copySDcardDatabase();
+                } catch (IOException e) {
+                    Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(getBaseContext(), "Using backup database from sdcard", Toast.LENGTH_SHORT).show();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void copySDcardDatabase() throws IOException {
+        File sd = Environment.getExternalStorageDirectory();
+        String DB_PATH = this.getDatabasePath("memories").toString();
+        String backupDBPath = "memories.db";
+        File currentDB = new File(DB_PATH);
+        File backupDB = new File(sd, backupDBPath);
+
+        if (currentDB.exists()) {
+            FileChannel src = new FileInputStream(backupDB).getChannel();
+            FileChannel dst = new FileOutputStream(currentDB).getChannel();
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
+        } else {
+            Log.e(TAG, "Current db does not exist\n" + currentDB.getAbsoluteFile() + "\n" + backupDB.getAbsoluteFile());
+        }
     }
 
     private void writeToSD() throws IOException {

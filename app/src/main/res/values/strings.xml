@@ -8,4 +8,5 @@
     <string name="title_activity_create_tag">CreateTagActivity</string>
     <string name="title_activity_memory_tags_map">MemoryTagsMapActivity</string>
     <string name="action_save_db">Save Database</string>
+    <string name="action_use_backup_db">Use sdcard Database</string>
 </resources>

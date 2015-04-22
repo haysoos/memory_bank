@@ -4,5 +4,7 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_save_db" android:title="@string/action_save_db"
-        android:orderInCategory="101" app:showAsAction="never" />
+        android:orderInCategory="101" app:showAsAction="collapseActionView" />
+    <item android:id="@+id/action_use_backup_db" android:title="@string/action_use_backup_db"
+          android:orderInCategory="102" app:showAsAction="collapseActionView" />
 </menu>

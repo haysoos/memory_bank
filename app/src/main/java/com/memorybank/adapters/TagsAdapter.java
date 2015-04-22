@@ -9,9 +9,6 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
-import com.memorybank.activities.TagsActivity;
-
-import org.w3c.dom.Text;
 
 import java.util.Date;
 

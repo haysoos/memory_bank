@@ -40,6 +40,7 @@ public class TagsActivity extends ActionBarActivity {
         mTagsAdapter = new TagsAdapter(this, MemoriesDatabase.getInstance().getTags());
         mTagsListView.setAdapter(mTagsAdapter);
         mAddNewTagImageButton = (ImageButton) findViewById(R.id.ibAddNewTagButton);
+        mAddNewTagImageButton.bringToFront();
 
         Intent intent = getIntent();
         if (intent != null) {

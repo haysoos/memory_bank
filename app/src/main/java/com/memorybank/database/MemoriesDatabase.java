@@ -52,7 +52,7 @@ public class MemoriesDatabase {
 
     public Cursor getMemories() {
         Cursor cursor = mReadableDatabase.query(SqlQueries.MEMORIES_TABLE, new String[] {"_id", "timestamp", "latitude",
-                "longitude", "value"}, null, null, null, null, "timestamp");
+                "longitude", "value"}, null, null, null, null, "timestamp DESC");
         return cursor;
     }
 

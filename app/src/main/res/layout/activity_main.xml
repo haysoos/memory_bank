@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:text="Tags"
         android:textSize="35sp"
-        android:layout_below="@+id/etMemorySearch"
-        android:layout_marginTop="20dp"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
 
     <EditText
         android:id="@+id/etMemoryValue"
