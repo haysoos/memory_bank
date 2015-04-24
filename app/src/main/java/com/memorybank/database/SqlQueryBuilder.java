@@ -16,6 +16,7 @@ public class SqlQueryBuilder {
     private String mHaving;
     private String mOrderBy;
     private String mLimit;
+    private String mInnerJoin;
 
     public static void init(SQLiteDatabase readableDatabase) {
         mReadableDatabase = readableDatabase;
@@ -58,7 +59,18 @@ public class SqlQueryBuilder {
     }
 
     public Cursor executeQuery() {
-        return mReadableDatabase.query(mTableName, mColumns, mSelection, mSelectionArgs, mGroupBy, mHaving, mOrderBy, mLimit);
+        String table = mTableName;
+
+        if (mInnerJoin != null && !mInnerJoin.isEmpty()) {
+            table = table + mInnerJoin;
+        }
+
+        return mReadableDatabase.query(table, mColumns, mSelection, mSelectionArgs, mGroupBy, mHaving, mOrderBy, mLimit);
+    }
+
+    public SqlQueryBuilder innerJoin(String tableToJoin, String joinClause) {
+        mInnerJoin = " inner join " + tableToJoin + " on " + joinClause;
+        return this;
     }
 
     enum SortDirection {

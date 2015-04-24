@@ -75,7 +75,20 @@ public class MemoriesDatabase {
     public Cursor getTagsWithMemoryid(int memoryId) {
         Cursor cursor = new SqlQueryBuilder()
                 .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
+                .innerJoin(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_tags_map.tag_id=memory_tags._id")
+                .where("memory_id = ?", new String[]{Integer.toString(memoryId)})
                 .orderBy("timestamp", SqlQueryBuilder.SortDirection.Ascending)
+                .executeQuery();
+
+        return cursor;
+    }
+
+    public Cursor getMatchingTagsIds(long memoryId) {
+        Cursor cursor = new SqlQueryBuilder()
+                .select(new String[]{"memory_tags._id"})
+                .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
+                .innerJoin(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_tags_map.tag_id=memory_tags._id")
+                .where("memory_id = ?", new String[]{Long.toString(memoryId)})
                 .executeQuery();
 
         return cursor;
@@ -91,18 +104,23 @@ public class MemoriesDatabase {
         return mWritableDatabase.insertWithOnConflict(SqlQueries.MEMORY_TAGS_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
-    public void saveTagsForMemory(long mMemoryId, Set<Long> mCheckedTags) {
+    public void saveTagsForMemory(long memoryId, Set<Long> selectedTags, Set<Long> unselectedTags) {
         long timestamp = System.currentTimeMillis();
         try {
             mWritableDatabase.beginTransaction();
-            for (Long tagId : mCheckedTags) {
+            for (Long tagId : selectedTags) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("timestamp", timestamp);
                 contentValues.put("tag_id", tagId);
-                contentValues.put("memory_id", mMemoryId);
+                contentValues.put("memory_id", memoryId);
 
                 mWritableDatabase.insertWithOnConflict(SqlQueries.MEMORY_TAGS_MAP_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
             }
+
+            for (Long tagId : unselectedTags) {
+                mWritableDatabase.delete(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_id=? AND tag_id=?", new String[]{Long.toString(memoryId), Long.toString(tagId)});
+            }
+
             mWritableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());

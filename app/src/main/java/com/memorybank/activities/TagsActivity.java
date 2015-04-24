@@ -1,6 +1,7 @@
 package com.memorybank.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +15,6 @@ import android.widget.ListView;
 import com.memorybank.R;
 import com.memorybank.adapters.TagsAdapter;
 import com.memorybank.database.MemoriesDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class TagsActivity extends ActionBarActivity {
 
@@ -36,7 +33,7 @@ public class TagsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_tags);
 
         mTagsListView = (ListView) findViewById(R.id.lvTags);
-        mTagsAdapter = new TagsAdapter(this, MemoriesDatabase.getInstance().getTags());
+        mTagsAdapter = new TagsAdapter(this);
         mTagsListView.setAdapter(mTagsAdapter);
         mAddNewTagImageButton = (ImageButton) findViewById(R.id.ibAddNewTagButton);
         mAddNewTagImageButton.bringToFront();
@@ -44,14 +41,17 @@ public class TagsActivity extends ActionBarActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mMemoryId = intent.getLongExtra(EXTRA_MEMORY_ID, DEFAULT_VALUE);
-            Log.e(TAG, "Memory ID: " + mMemoryId);
+
             if (mMemoryId > DEFAULT_VALUE) {
+                Log.i(TAG, "Memory ID: " + mMemoryId);
                 isSelectionMode = true;
+                Cursor selectedTagsCursor = MemoriesDatabase.getInstance().getMatchingTagsIds(mMemoryId);
+                mTagsAdapter.setSelectedTags(selectedTagsCursor);
 
                 mTagsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        mTagsAdapter.onItemClick(view, position, id);
+                        mTagsAdapter.onItemClick(view, id);
                     }
                 });
                 mAddNewTagImageButton.setVisibility(View.GONE);
@@ -88,7 +88,7 @@ public class TagsActivity extends ActionBarActivity {
     public void finish() {
         super.finish();
         if (isSelectionMode) {
-            MemoriesDatabase.getInstance().saveTagsForMemory(mMemoryId, mTagsAdapter.getSelectedTags());
+            MemoriesDatabase.getInstance().saveTagsForMemory(mMemoryId, mTagsAdapter.getSelectedTags(), mTagsAdapter.getUnselectedTags());
         }
     }
 

@@ -10,6 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
+import com.memorybank.database.MemoriesDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,9 +28,10 @@ public class TagsAdapter extends CursorAdapter {
     private Set<Long> mSelectedTags = new HashSet<Long>();
     private int mDefaultBackgroundColor;
     private int mSelectedBackgroundColor;
+    private Set<Long> mUnselectedTags = new HashSet<Long>();
 
-    public TagsAdapter(Context context, Cursor cursor) {
-        super(context, cursor, false);
+    public TagsAdapter(Context context) {
+        super(context, null, false);
         mContext = context.getApplicationContext();
     }
 
@@ -72,17 +74,35 @@ public class TagsAdapter extends CursorAdapter {
 
     }
 
-    public void onItemClick(View view, int position, long id) {
+    public void onItemClick(View view, long id) {
         if (mSelectedTags.contains(id)) {
             mSelectedTags.remove(id);
+            mUnselectedTags.add(id);
             view.setBackgroundResource(android.R.color.white);
         } else {
             view.setBackgroundResource(android.R.color.darker_gray);
             mSelectedTags.add(id);
+            if (mUnselectedTags.contains(id)) {
+                mUnselectedTags.remove(id);
+            }
         }
     }
 
     public Set<Long> getSelectedTags() {
         return mSelectedTags;
+    }
+
+    public void setSelectedTags(Cursor cursor) {
+        if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
+                do {
+                    mSelectedTags.add(cursor.getLong(0));
+                } while (cursor.moveToNext());
+            }
+        }
+    }
+
+    public Set<Long> getUnselectedTags() {
+        return mUnselectedTags;
     }
 }
