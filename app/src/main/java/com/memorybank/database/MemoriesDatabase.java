@@ -11,6 +11,7 @@ import com.memorybank.model.MemoryTag;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jesus Medrano on 4/12/15.
@@ -34,6 +35,7 @@ public class MemoriesDatabase {
         MemoriesDatabaseHelper memoriesDatabaseHelper = new MemoriesDatabaseHelper(context);
         mWritableDatabase = memoriesDatabaseHelper.getWritableDatabase();
         mReadableDatabase = memoriesDatabaseHelper.getReadableDatabase();
+        SqlQueryBuilder.init(mReadableDatabase);
     }
 
     public static MemoriesDatabase getInstance() {
@@ -51,13 +53,31 @@ public class MemoriesDatabase {
     }
 
     public Cursor getMemories() {
-        Cursor cursor = mReadableDatabase.query(SqlQueries.MEMORIES_TABLE, new String[] {"_id", "timestamp", "latitude",
-                "longitude", "value"}, null, null, null, null, "timestamp DESC");
+        Cursor cursor = new SqlQueryBuilder()
+                .select(new String[] {"_id", "timestamp", "latitude",
+                        "longitude", "value"})
+                .fromTable(SqlQueries.MEMORIES_TABLE)
+                .orderBy("timestamp", SqlQueryBuilder.SortDirection.Descending)
+                .executeQuery();
+
         return cursor;
     }
 
     public Cursor getTags() {
-        Cursor cursor = mReadableDatabase.query(SqlQueries.MEMORY_TAGS_TABLE, null, null, null, null, null, "timestamp");
+        Cursor cursor = new SqlQueryBuilder()
+                .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
+                .orderBy("timestamp", SqlQueryBuilder.SortDirection.Ascending)
+                .executeQuery();
+
+        return cursor;
+    }
+
+    public Cursor getTagsWithMemoryid(int memoryId) {
+        Cursor cursor = new SqlQueryBuilder()
+                .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
+                .orderBy("timestamp", SqlQueryBuilder.SortDirection.Ascending)
+                .executeQuery();
+
         return cursor;
     }
 
@@ -68,10 +88,10 @@ public class MemoriesDatabase {
         contentValues.put("description", tag.getDescription());
         contentValues.put("private", tag.isPrivate());
 
-        return mWritableDatabase.insert(SqlQueries.MEMORY_TAGS_TABLE, null, contentValues);
+        return mWritableDatabase.insertWithOnConflict(SqlQueries.MEMORY_TAGS_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
-    public void saveTagsForMemory(long mMemoryId, List<Long> mCheckedTags) {
+    public void saveTagsForMemory(long mMemoryId, Set<Long> mCheckedTags) {
         long timestamp = System.currentTimeMillis();
         try {
             mWritableDatabase.beginTransaction();
@@ -81,7 +101,7 @@ public class MemoriesDatabase {
                 contentValues.put("tag_id", tagId);
                 contentValues.put("memory_id", mMemoryId);
 
-                mWritableDatabase.insert(SqlQueries.MEMORY_TAGS_MAP_TABLE, null, contentValues);
+                mWritableDatabase.insertWithOnConflict(SqlQueries.MEMORY_TAGS_MAP_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
             }
             mWritableDatabase.setTransactionSuccessful();
         } catch (Exception e) {

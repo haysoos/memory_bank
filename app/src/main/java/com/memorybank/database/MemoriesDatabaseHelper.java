@@ -25,7 +25,5 @@ public class MemoriesDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SqlQueries.DELETE_MEMORY_TAGS_MAP_TABLE);
-        db.execSQL(SqlQueries.CREATE_MEMORY_TAGS_MAP_TABLE);
     }
 }

@@ -29,7 +29,6 @@ public class TagsActivity extends ActionBarActivity {
     private ImageButton mAddNewTagImageButton;
     private boolean isSelectionMode = false;
     private long mMemoryId = DEFAULT_VALUE;
-    private List<Long> mSelectedTags = new ArrayList<Long>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +51,7 @@ public class TagsActivity extends ActionBarActivity {
                 mTagsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        if (mSelectedTags.contains(id)) {
-                            mSelectedTags.remove(id);
-                            view.setBackgroundResource(android.R.color.white);
-                        } else {
-                            view.setBackgroundResource(android.R.color.darker_gray);
-                            mSelectedTags.add(id);
-                        }
+                        mTagsAdapter.onItemClick(view, position, id);
                     }
                 });
                 mAddNewTagImageButton.setVisibility(View.GONE);
@@ -96,7 +88,7 @@ public class TagsActivity extends ActionBarActivity {
     public void finish() {
         super.finish();
         if (isSelectionMode) {
-            MemoriesDatabase.getInstance().saveTagsForMemory(mMemoryId, mSelectedTags);
+            MemoriesDatabase.getInstance().saveTagsForMemory(mMemoryId, mTagsAdapter.getSelectedTags());
         }
     }
 
