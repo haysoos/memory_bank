@@ -2,10 +2,8 @@ package com.memorybank.activities;
 
 import android.content.Intent;
 import android.location.Location;
-import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +15,9 @@ import com.memorybank.R;
 import com.memorybank.database.MemoriesDatabase;
 import com.memorybank.managers.MemoryLocationManager;
 import com.memorybank.model.Memory;
+import com.memorybank.utils.IOUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
-
 
 public class MainActivity extends ActionBarActivity {
 
@@ -36,9 +30,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initDatabase();
-        initLocationManager();
         setContentView(R.layout.activity_main);
 
         mMemoryValueEditText = (EditText) findViewById(R.id.etMemoryValue);
@@ -51,19 +42,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onStart() {
-        //MemoryLocationManager.getInstance().startListeningForUpdates();
-        super.onStart();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         MemoryLocationManager.getInstance().stopListeningForUpdates();
-    }
-
-    private void initLocationManager() {
-        MemoryLocationManager.init(this);
     }
 
     private void initListeners() {
@@ -72,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String value = mMemoryValueEditText.getText().toString();
                 Location location = MemoryLocationManager.getInstance().getLocation();
-                Memory memory = null;
+                Memory memory;
                 if (location != null) {
                     memory = new Memory(System.currentTimeMillis(), location.getLatitude(), location.getLongitude(), value);
                 } else {
@@ -102,11 +83,6 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private void initDatabase() {
-        MemoriesDatabase.initialize(this);
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -127,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_save_db:
                 try {
-                    writeToSD();
+                    IOUtils.writeToSD(this);
                 } catch (IOException e) {
                     Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -135,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_use_backup_db:
                 try {
-                    copySDcardDatabase();
+                    IOUtils.copySDcardDatabase(this);
                 } catch (IOException e) {
                     Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -145,41 +121,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    private void copySDcardDatabase() throws IOException {
-        File sd = Environment.getExternalStorageDirectory();
-        String DB_PATH = this.getDatabasePath("memories").toString();
-        String backupDBPath = "memories.db";
-        File currentDB = new File(DB_PATH);
-        File backupDB = new File(sd, backupDBPath);
-
-        if (currentDB.exists()) {
-            FileChannel src = new FileInputStream(backupDB).getChannel();
-            FileChannel dst = new FileOutputStream(currentDB).getChannel();
-            dst.transferFrom(src, 0, src.size());
-            src.close();
-            dst.close();
-        } else {
-            Log.e(TAG, "Current db does not exist\n" + currentDB.getAbsoluteFile() + "\n" + backupDB.getAbsoluteFile());
-        }
-    }
-
-    private void writeToSD() throws IOException {
-        File sd = Environment.getExternalStorageDirectory();
-        String DB_PATH = this.getDatabasePath("memories").toString();
-        String backupDBPath = "memories.db";
-        File currentDB = new File(DB_PATH);
-        File backupDB = new File(sd, backupDBPath);
-
-        if (currentDB.exists()) {
-            FileChannel src = new FileInputStream(currentDB).getChannel();
-            FileChannel dst = new FileOutputStream(backupDB).getChannel();
-            dst.transferFrom(src, 0, src.size());
-            src.close();
-            dst.close();
-        } else {
-            Log.e(TAG, "Current db does not exist\n" + currentDB.getAbsoluteFile() + "\n" + backupDB.getAbsoluteFile());
-        }
-    }
-
 }
