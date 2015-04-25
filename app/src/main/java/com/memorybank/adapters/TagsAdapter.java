@@ -10,12 +10,9 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
-import com.memorybank.database.MemoriesDatabase;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -93,12 +90,16 @@ public class TagsAdapter extends CursorAdapter {
     }
 
     public void setSelectedTags(Cursor cursor) {
-        if (cursor != null && cursor.moveToFirst()) {
-            if (cursor.moveToFirst()) {
-                do {
-                    mSelectedTags.add(cursor.getLong(0));
-                } while (cursor.moveToNext());
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        mSelectedTags.add(cursor.getLong(0));
+                    } while (cursor.moveToNext());
+                }
             }
+        } finally {
+            cursor.close();
         }
     }
 

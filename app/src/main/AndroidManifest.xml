@@ -38,6 +38,10 @@
             android:name=".activities.MemoryTagsMapActivity"
             android:label="@string/title_activity_memory_tags_map" >
         </activity>
+        <activity
+            android:name=".activities.EditMemoryActivity"
+            android:label="@string/title_activity_memories_list" >
+        </activity>
     </application>
 
 </manifest>

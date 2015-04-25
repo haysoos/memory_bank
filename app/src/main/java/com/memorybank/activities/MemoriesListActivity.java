@@ -37,6 +37,22 @@ public class MemoriesListActivity extends ActionBarActivity {
             }
         });
 
+        mMemoriesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MemoriesListActivity.this, EditMemoryActivity.class);
+                intent.putExtra(TagsActivity.EXTRA_MEMORY_ID, id);
+                MemoriesListActivity.this.startActivity(intent);
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMemoriesAdapter.changeCursor(MemoriesDatabase.getInstance().getMemories());
     }
 
     @Override

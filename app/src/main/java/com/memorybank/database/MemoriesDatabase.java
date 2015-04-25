@@ -140,4 +140,36 @@ public class MemoriesDatabase {
 
         return cursor;
     }
+
+    public Memory getMemory(long mMemoryId) {
+
+        Cursor cursor = new SqlQueryBuilder()
+                .select(new String[] {"memories._id", "memories.timestamp", "latitude",
+                        "longitude", "value"})
+                .fromTable(SqlQueries.MEMORIES_TABLE)
+                .where("_id = ?", Long.toString(mMemoryId))
+                .executeQuery();
+
+        try {
+            Memory memory = null;
+            if (cursor != null && cursor.moveToFirst()) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        memory = new Memory(cursor.getLong(0), cursor.getLong(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4));
+                    } while (cursor.moveToNext());
+                }
+            }
+
+            return memory;
+        } finally {
+            cursor.close();
+        }
+
+    }
+
+    public void updateMemory(Memory memory) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", memory.getValue());
+        mWritableDatabase.updateWithOnConflict(SqlQueries.MEMORIES_TABLE, contentValues, "_id=?", new String[] {Long.toString(memory.getId())}, SQLiteDatabase.CONFLICT_IGNORE);
+    }
 }
