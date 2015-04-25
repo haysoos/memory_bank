@@ -4,14 +4,21 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.memorybank.R;
+import com.memorybank.adapters.MemoriesAdapter;
 import com.memorybank.database.MemoriesDatabase;
 import com.memorybank.managers.MemoryLocationManager;
 import com.memorybank.model.Memory;
@@ -26,16 +33,24 @@ public class MainActivity extends ActionBarActivity {
     private EditText mMemoryValueEditText;
     private TextView mMemoriesListTextView;
     private TextView mTagsTextView;
+    private ViewGroup mViewGroupPlaceholder;
+    private View mInsertMemoryView;
+    private EditText mSearchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mViewGroupPlaceholder = (ViewGroup) findViewById(R.id.viewGroupPlaceHolder);
+        mInsertMemoryView = getLayoutInflater().inflate(R.layout.view_insert_memory, mViewGroupPlaceholder, false);
+
+        mViewGroupPlaceholder.addView(mInsertMemoryView);
 
         mMemoryValueEditText = (EditText) findViewById(R.id.etMemoryValue);
         mMemoriesListTextView = (TextView) findViewById(R.id.tvMemoriesList);
         mSaveButton = (TextView) findViewById(R.id.tvSave);
         mTagsTextView = (TextView) findViewById(R.id.tvTags);
+        mSearchEditText = (EditText) findViewById(R.id.etMemorySearch);
 
         initListeners();
         MemoryLocationManager.getInstance().startListeningForUpdates();
@@ -52,6 +67,10 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 String value = mMemoryValueEditText.getText().toString();
+                if (value == null || value.isEmpty()) {
+                    return;
+                }
+
                 Location location = MemoryLocationManager.getInstance().getLocation();
                 Memory memory;
                 if (location != null) {
@@ -79,6 +98,70 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TagsActivity.class);
                 MainActivity.this.startActivity(intent);
+            }
+        });
+
+        mSearchEditText.setOnTouchListener(new View.OnTouchListener() {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    int leftEdgeOfRightDrawable = mSearchEditText.getRight()
+                            - mSearchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width();
+                    // when EditBox has padding, adjust leftEdge like
+                    // leftEdgeOfRightDrawable -= getResources().getDimension(R.dimen.edittext_padding_left_right);
+                    if (event.getRawX() >= leftEdgeOfRightDrawable) {
+                        // clicked on clear icon
+                        mSearchEditText.setText("");
+                        return false;
+                    }
+                }
+
+                return false;
+            }
+        });
+
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mViewGroupPlaceholder.removeAllViews();
+
+                if (s.toString().isEmpty()) {
+                    mViewGroupPlaceholder.addView(mInsertMemoryView);
+                    return;
+                }
+
+                ListView lvSearchResults = new ListView(MainActivity.this);
+                lvSearchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(MainActivity.this, TagsActivity.class);
+                        intent.putExtra(TagsActivity.EXTRA_MEMORY_ID, id);
+                        MainActivity.this.startActivity(intent);
+                    }
+                });
+
+                String searchQuery;
+                if (mSearchEditText != null && mSearchEditText.getText() != null) {
+                    searchQuery = mSearchEditText.getText().toString();
+                } else {
+                    return;
+                }
+
+                MemoriesAdapter adapter = new MemoriesAdapter(MainActivity.this, MemoriesDatabase.getInstance().searchMemories(searchQuery));
+                lvSearchResults.setAdapter(adapter);
+                mViewGroupPlaceholder.addView(lvSearchResults);
             }
         });
     }

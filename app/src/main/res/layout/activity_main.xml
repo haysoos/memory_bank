@@ -1,59 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/etMemorySearch"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:visibility="gone"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/etMemorySearch"
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/etMemorySearch"
-        android:text="Search"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/tvTags"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tags"
-        android:textSize="35sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"/>
-
-    <EditText
-        android:id="@+id/etMemoryValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTags"
-        android:minLines="15"/>
+        android:drawableRight="@android:drawable/ic_menu_close_clear_cancel"
+        android:hint="Search Memories"/>
 
-    <TextView
-        android:id="@+id/tvSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:text="Save"
-        android:textSize="35sp"
-        />
+    <FrameLayout
+        android:id="@+id/viewGroupPlaceHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tvMemoriesList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Memories List"
-        android:textSize="35sp"
-        android:layout_alignParentBottom="true"/>
-
-</RelativeLayout>
+</LinearLayout>

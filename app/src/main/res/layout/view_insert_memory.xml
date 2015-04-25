@@ -1,0 +1,38 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvTags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tags"
+        android:textSize="35sp" />
+
+    <EditText
+        android:id="@+id/etMemoryValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTags"
+        android:minLines="10"/>
+
+    <TextView
+        android:id="@+id/tvSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/tvTags"
+        android:text="Save"
+        android:textSize="35sp"
+        />
+
+    <TextView
+        android:id="@+id/tvMemoriesList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Memories List"
+        android:textSize="35sp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

@@ -16,7 +16,7 @@ public class SqlQueryBuilder {
     private String mHaving;
     private String mOrderBy;
     private String mLimit;
-    private String mInnerJoin;
+    private String mInnerJoin = "";
 
     public static void init(SQLiteDatabase readableDatabase) {
         mReadableDatabase = readableDatabase;
@@ -32,7 +32,7 @@ public class SqlQueryBuilder {
         return this;
     }
 
-    public SqlQueryBuilder where(String whereStatement, String[] selectedArguments) {
+    public SqlQueryBuilder where(String whereStatement, String...selectedArguments) {
         mSelection = whereStatement;
         mSelectionArgs = selectedArguments;
         return this;
@@ -69,7 +69,7 @@ public class SqlQueryBuilder {
     }
 
     public SqlQueryBuilder innerJoin(String tableToJoin, String joinClause) {
-        mInnerJoin = " inner join " + tableToJoin + " on " + joinClause;
+        mInnerJoin += " inner join " + tableToJoin + " on " + joinClause;
         return this;
     }
 

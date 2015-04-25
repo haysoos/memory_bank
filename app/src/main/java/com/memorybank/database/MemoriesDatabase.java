@@ -9,8 +9,6 @@ import android.util.Log;
 import com.memorybank.model.Memory;
 import com.memorybank.model.MemoryTag;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -76,7 +74,7 @@ public class MemoriesDatabase {
         Cursor cursor = new SqlQueryBuilder()
                 .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
                 .innerJoin(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_tags_map.tag_id=memory_tags._id")
-                .where("memory_id = ?", new String[]{Integer.toString(memoryId)})
+                .where("memory_id = ?", Integer.toString(memoryId))
                 .orderBy("timestamp", SqlQueryBuilder.SortDirection.Ascending)
                 .executeQuery();
 
@@ -88,7 +86,7 @@ public class MemoriesDatabase {
                 .select(new String[]{"memory_tags._id"})
                 .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
                 .innerJoin(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_tags_map.tag_id=memory_tags._id")
-                .where("memory_id = ?", new String[]{Long.toString(memoryId)})
+                .where("memory_id = ?", Long.toString(memoryId))
                 .executeQuery();
 
         return cursor;
@@ -127,5 +125,19 @@ public class MemoriesDatabase {
         } finally {
             mWritableDatabase.endTransaction();
         }
+    }
+
+    public Cursor searchMemories(String searchQuery) {
+        Cursor cursor = new SqlQueryBuilder()
+                .select(new String[] {"memories._id", "memories.timestamp", "latitude",
+                        "longitude", "value"})
+                .fromTable(SqlQueries.MEMORIES_TABLE)
+                .innerJoin(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_tags_map.memory_id = memories._id")
+                .innerJoin(SqlQueries.MEMORY_TAGS_TABLE, "memory_tags_map.tag_id = memory_tags._id")
+                .where("memory_tags.name like ?", "%" + searchQuery + "%")
+                .orderBy("memories.timestamp", SqlQueryBuilder.SortDirection.Descending)
+                .executeQuery();
+
+        return cursor;
     }
 }
