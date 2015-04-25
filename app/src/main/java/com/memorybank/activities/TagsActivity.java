@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +43,6 @@ public class TagsActivity extends ActionBarActivity {
             mMemoryId = intent.getLongExtra(EXTRA_MEMORY_ID, DEFAULT_VALUE);
 
             if (mMemoryId > DEFAULT_VALUE) {
-                Log.i(TAG, "Memory ID: " + mMemoryId);
                 isSelectionMode = true;
                 Cursor selectedTagsCursor = MemoriesDatabase.getInstance().getMatchingTagsIds(mMemoryId);
                 mTagsAdapter.setSelectedTags(selectedTagsCursor);
@@ -58,8 +56,6 @@ public class TagsActivity extends ActionBarActivity {
                 mAddNewTagImageButton.setVisibility(View.GONE);
                 return;
             }
-        } else {
-            Log.e(TAG, "intent was null");
         }
 
         mTagsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
