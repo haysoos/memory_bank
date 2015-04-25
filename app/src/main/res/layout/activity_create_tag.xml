@@ -42,7 +42,7 @@
         android:text="is Private Tag"
         android:layout_marginTop="40dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@id/tvDescription"
+        android:layout_below="@id/etDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -54,8 +54,8 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/tvCreate"
-        android:text="Create"
+        android:id="@+id/tvSave"
+        android:text="Save"
         android:padding="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

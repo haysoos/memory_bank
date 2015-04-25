@@ -30,7 +30,7 @@
             android:label="@string/title_activity_tags" >
         </activity>
         <activity
-            android:name=".activities.CreateTagActivity"
+            android:name=".activities.EditTagActivity"
             android:label="@string/title_activity_create_tag"
             android:screenOrientation="portrait" >
         </activity>

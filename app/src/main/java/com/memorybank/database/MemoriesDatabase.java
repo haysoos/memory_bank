@@ -172,4 +172,12 @@ public class MemoriesDatabase {
         contentValues.put("value", memory.getValue());
         mWritableDatabase.updateWithOnConflict(SqlQueries.MEMORIES_TABLE, contentValues, "_id=?", new String[] {Long.toString(memory.getId())}, SQLiteDatabase.CONFLICT_IGNORE);
     }
+
+    public void updateTag(MemoryTag tag) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", tag.getName());
+        contentValues.put("description", tag.getDescription());
+        contentValues.put("private", tag.isPrivate());
+        mWritableDatabase.updateWithOnConflict(SqlQueries.MEMORY_TAGS_TABLE, contentValues, "_id=?", new String[] {Long.toString(tag.getId())}, SQLiteDatabase.CONFLICT_IGNORE);
+    }
 }

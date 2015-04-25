@@ -10,6 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
+import com.memorybank.model.MemoryTag;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -105,5 +106,12 @@ public class TagsAdapter extends CursorAdapter {
 
     public Set<Long> getUnselectedTags() {
         return mUnselectedTags;
+    }
+
+    public MemoryTag getMemoryTag(int position) {
+        Cursor cursor = (Cursor) getItem(position);
+        MemoryTag tag = new MemoryTag(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3) > 0, cursor.getLong(4));
+
+        return tag;
     }
 }

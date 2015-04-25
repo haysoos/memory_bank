@@ -112,7 +112,6 @@ public class MainActivity extends ActionBarActivity {
                     int leftEdgeOfRightDrawable = mSearchEditText.getRight()
                             - mSearchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width();
                     // when EditBox has padding, adjust leftEdge like
-                    // leftEdgeOfRightDrawable -= getResources().getDimension(R.dimen.edittext_padding_left_right);
                     if (event.getRawX() >= leftEdgeOfRightDrawable) {
                         // clicked on clear icon
                         mSearchEditText.setText("");
@@ -182,7 +181,6 @@ public class MainActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_settings:
-
                 return true;
             case R.id.action_save_db:
                 try {

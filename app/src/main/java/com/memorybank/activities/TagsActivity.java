@@ -2,8 +2,8 @@ package com.memorybank.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.memorybank.R;
 import com.memorybank.adapters.TagsAdapter;
 import com.memorybank.database.MemoriesDatabase;
+import com.memorybank.model.MemoryTag;
 
 public class TagsActivity extends ActionBarActivity {
 
@@ -61,11 +62,25 @@ public class TagsActivity extends ActionBarActivity {
             Log.e(TAG, "intent was null");
         }
 
+        mTagsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                MemoryTag tag = mTagsAdapter.getMemoryTag(position);
+                Intent intent = new Intent(TagsActivity.this, EditTagActivity.class);
+                intent.putExtra(EditTagActivity.EXTRA_TAG_NAME, tag.getName());
+                intent.putExtra(EditTagActivity.EXTRA_TAG_DESCRIPTION, tag.getDescription());
+                intent.putExtra(EditTagActivity.EXTRA_TAG_IS_PRIVATE, tag.isPrivate());
+                intent.putExtra(EditTagActivity.EXTRA_TAG_TIMESTAMP, tag.getTimestamp());
+                intent.putExtra(EditTagActivity.EXTRA_TAG_ID, tag.getId());
+                TagsActivity.this.startActivity(intent);
+                return true;
+            }
+        });
         
         mAddNewTagImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TagsActivity.this, CreateTagActivity.class);
+                Intent intent = new Intent(TagsActivity.this, EditTagActivity.class);
                 TagsActivity.this.startActivity(intent);
             }
         });
