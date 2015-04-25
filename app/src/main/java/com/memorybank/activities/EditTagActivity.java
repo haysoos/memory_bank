@@ -14,7 +14,6 @@ import com.memorybank.R;
 import com.memorybank.database.MemoriesDatabase;
 import com.memorybank.model.MemoryTag;
 
-
 public class EditTagActivity extends ActionBarActivity {
 
     private static final int DEFAULT_VALUE = -1;
@@ -42,15 +41,17 @@ public class EditTagActivity extends ActionBarActivity {
         MemoryTag memoryTag = null;
         if (intent != null) {
             long id = intent.getLongExtra(EXTRA_TAG_ID, MemoryTag.DEFAULT_ID);
-            String name = intent.getStringExtra(EXTRA_TAG_NAME);
-            String description = intent.getStringExtra(EXTRA_TAG_DESCRIPTION);
-            long timestamp = intent.getLongExtra(EXTRA_TAG_TIMESTAMP, DEFAULT_VALUE);
-            boolean privacyTag = intent.getBooleanExtra(EXTRA_TAG_IS_PRIVATE, false);
-            memoryTag = new MemoryTag(id, name, description, privacyTag, timestamp);
+            if (id > MemoryTag.DEFAULT_ID) {
+                String name = intent.getStringExtra(EXTRA_TAG_NAME);
+                String description = intent.getStringExtra(EXTRA_TAG_DESCRIPTION);
+                long timestamp = intent.getLongExtra(EXTRA_TAG_TIMESTAMP, DEFAULT_VALUE);
+                boolean privacyTag = intent.getBooleanExtra(EXTRA_TAG_IS_PRIVATE, false);
+                memoryTag = new MemoryTag(id, name, description, privacyTag, timestamp);
 
-            etTagName.setText(memoryTag.getName());
-            etTagDescription.setText(memoryTag.getDescription());
-            mPrivateSwitch.setChecked(memoryTag.isPrivate());
+                etTagName.setText(memoryTag.getName());
+                etTagDescription.setText(memoryTag.getDescription());
+                mPrivateSwitch.setChecked(memoryTag.isPrivate());
+            }
         }
 
         final MemoryTag finalMemoryTag = memoryTag;
