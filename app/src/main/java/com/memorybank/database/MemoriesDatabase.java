@@ -52,10 +52,12 @@ public class MemoriesDatabase {
 
     public Cursor getMemories() {
         Cursor cursor = new SqlQueryBuilder()
-                .select(new String[] {"_id", "timestamp", "latitude",
+                .select(new String[] {"memories._id", "memories.timestamp", "latitude",
                         "longitude", "value"})
                 .fromTable(SqlQueries.MEMORIES_TABLE)
-                .orderBy("timestamp", SqlQueryBuilder.SortDirection.Descending)
+                .where("memories._id not in (select memory_id from memory_tags_map inner join memory_tags on " +
+                        "memory_tags_map.tag_id=memory_tags._id where private=1)")
+                .orderBy("memories.timestamp", SqlQueryBuilder.SortDirection.Descending)
                 .executeQuery();
 
         return cursor;
