@@ -2,7 +2,6 @@ package com.memorybank.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
+import com.memorybank.database.MemoriesTable;
 
 import java.util.Date;
 
@@ -43,11 +43,11 @@ public class MemoriesAdapter extends CursorAdapter {
         TextView latitude = (TextView) view.findViewById(R.id.tvLatitude);
         TextView longitude = (TextView) view.findViewById(R.id.tvLongitude);
 
-        id.setText(cursor.getInt(0) + "");
-        Date date = new Date(cursor.getLong(1));
+        id.setText(cursor.getInt(MemoriesTable.ID.columnIndex()) + "");
+        Date date = new Date(cursor.getLong(MemoriesTable.TIMESTAMP.columnIndex()));
         timestamp.setText(date.toString());
-        latitude.setText(cursor.getDouble(2) + ", ");
-        longitude.setText(cursor.getDouble(3) + "");
-        value.setText(cursor.getString(4));
+        latitude.setText(cursor.getDouble(MemoriesTable.LATITUDE.columnIndex()) + ", ");
+        longitude.setText(Double.toString(cursor.getDouble(MemoriesTable.LONGITUDE.columnIndex())));
+        value.setText(cursor.getString(MemoriesTable.VALUE.columnIndex()));
     }
 }

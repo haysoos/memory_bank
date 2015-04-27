@@ -42,22 +42,27 @@ public class MemoriesDatabase {
 
     public void saveMemory(Memory memory) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("timestamp", memory.getTimestamp());
-        contentValues.put("latitude", memory.getLatitude());
-        contentValues.put("longitude", memory.getLongitude());
-        contentValues.put("value", memory.getValue());
+        contentValues.put(MemoriesTable.TIMESTAMP.columnName(), memory.getTimestamp());
+        contentValues.put(MemoriesTable.LATITUDE.columnName(), memory.getLatitude());
+        contentValues.put(MemoriesTable.LONGITUDE.columnName(), memory.getLongitude());
+        contentValues.put(MemoriesTable.VALUE.columnName(), memory.getValue());
 
         mWritableDatabase.insert(SqlQueries.MEMORIES_TABLE, null, contentValues);
     }
 
     public Cursor getMemories() {
         Cursor cursor = new SqlQueryBuilder()
-                .select(new String[] {"memories._id", "memories.timestamp", "latitude",
-                        "longitude", "value"})
+                .select(new String[] {
+                        MemoriesTable.ID.columnTableName(),
+                        MemoriesTable.TIMESTAMP.columnTableName(),
+                        MemoriesTable.LATITUDE.columnTableName(),
+                        MemoriesTable.LONGITUDE.columnTableName(),
+                        MemoriesTable.VALUE.columnTableName()
+                })
                 .fromTable(SqlQueries.MEMORIES_TABLE)
                 .where("memories._id not in (select memory_id from memory_tags_map inner join memory_tags on " +
                         "memory_tags_map.tag_id=memory_tags._id where private=1)")
-                .orderBy("memories.timestamp", SqlQueryBuilder.SortDirection.Descending)
+                .orderBy(MemoriesTable.TIMESTAMP.columnTableName(), SqlQueryBuilder.SortDirection.Descending)
                 .executeQuery();
 
         return cursor;
@@ -66,7 +71,7 @@ public class MemoriesDatabase {
     public Cursor getTags() {
         Cursor cursor = new SqlQueryBuilder()
                 .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
-                .orderBy("timestamp", SqlQueryBuilder.SortDirection.Ascending)
+                .orderBy(TagsTable.TIMESTAMP.columnTableName(), SqlQueryBuilder.SortDirection.Ascending)
                 .executeQuery();
 
         return cursor;
@@ -85,7 +90,7 @@ public class MemoriesDatabase {
 
     public Cursor getMatchingTagsIds(long memoryId) {
         Cursor cursor = new SqlQueryBuilder()
-                .select(new String[]{"memory_tags._id"})
+                .select(new String[]{TagsTable.ID.columnTableName()})
                 .fromTable(SqlQueries.MEMORY_TAGS_TABLE)
                 .innerJoin(SqlQueries.MEMORY_TAGS_MAP_TABLE, "memory_tags_map.tag_id=memory_tags._id")
                 .where("memory_id = ?", Long.toString(memoryId))
@@ -96,10 +101,10 @@ public class MemoriesDatabase {
 
     public long saveTag(MemoryTag tag) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("timestamp", tag.getTimestamp());
-        contentValues.put("name", tag.getName());
-        contentValues.put("description", tag.getDescription());
-        contentValues.put("private", tag.isPrivate());
+        contentValues.put(TagsTable.TIMESTAMP.columnName(), tag.getTimestamp());
+        contentValues.put(TagsTable.NAME.columnName(), tag.getName());
+        contentValues.put(TagsTable.DESCRIPTION.columnName(), tag.getDescription());
+        contentValues.put(TagsTable.PRIVATE.columnName(), tag.isPrivate());
 
         return mWritableDatabase.insertWithOnConflict(SqlQueries.MEMORY_TAGS_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
     }
@@ -110,9 +115,9 @@ public class MemoriesDatabase {
             mWritableDatabase.beginTransaction();
             for (Long tagId : selectedTags) {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("timestamp", timestamp);
-                contentValues.put("tag_id", tagId);
-                contentValues.put("memory_id", memoryId);
+                contentValues.put(TagsMapTable.TIMESTAMP.columnName(), timestamp);
+                contentValues.put(TagsMapTable.TAG_ID.columnName(), tagId);
+                contentValues.put(TagsMapTable.MEMORY_ID.columnName(), memoryId);
 
                 mWritableDatabase.insertWithOnConflict(SqlQueries.MEMORY_TAGS_MAP_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
             }

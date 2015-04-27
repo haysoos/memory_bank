@@ -10,6 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorybank.R;
+import com.memorybank.database.TagsTable;
 import com.memorybank.model.MemoryTag;
 
 import java.util.Date;
@@ -52,16 +53,16 @@ public class TagsAdapter extends CursorAdapter {
         TextView isPrivate = (TextView) view.findViewById(R.id.tvIsPrivate);
         TextView timestamp = (TextView) view.findViewById(R.id.tvTagTimeStamp);
 
-        long tagId = cursor.getLong(0);
+        long tagId = cursor.getLong(TagsTable.ID.columnIndex());
         id.setText(Long.toString(tagId));
-        name.setText(cursor.getString(1));
-        description.setText(cursor.getString(2));
-        if (cursor.getInt(3) > 0) {
+        name.setText(cursor.getString(TagsTable.NAME.columnIndex()));
+        description.setText(cursor.getString(TagsTable.DESCRIPTION.columnIndex()));
+        if (cursor.getInt(TagsTable.PRIVATE.columnIndex()) > 0) {
             isPrivate.setText(Boolean.TRUE.toString());
         } else {
             isPrivate.setText(Boolean.FALSE.toString());
         }
-        Date date = new Date(cursor.getLong(4));
+        Date date = new Date(cursor.getLong(TagsTable.TIMESTAMP.columnIndex()));
         timestamp.setText(date.toString());
 
         if (mSelectedTags.contains(tagId)) {
@@ -110,7 +111,12 @@ public class TagsAdapter extends CursorAdapter {
 
     public MemoryTag getMemoryTag(int position) {
         Cursor cursor = (Cursor) getItem(position);
-        MemoryTag tag = new MemoryTag(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3) > 0, cursor.getLong(4));
+        MemoryTag tag = new MemoryTag(
+                cursor.getLong(TagsTable.ID.columnIndex()),
+                cursor.getString(TagsTable.NAME.columnIndex()),
+                cursor.getString(TagsTable.DESCRIPTION.columnIndex()),
+                cursor.getInt(TagsTable.PRIVATE.columnIndex()) > 0,
+                cursor.getLong(TagsTable.TIMESTAMP.columnIndex()));
 
         return tag;
     }
