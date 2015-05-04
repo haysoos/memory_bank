@@ -13,8 +13,9 @@
     <EditText
         android:id="@+id/etMemoryValue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/tvTags"
+        android:inputType="textCapSentences|textAutoCorrect"
         android:minLines="10"/>
 
     <TextView
@@ -28,11 +29,13 @@
         />
 
     <TextView
-        android:id="@+id/tvMemoriesList"
+        android:id="@+id/tvCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Memories List"
+        android:layout_alignBaseline="@+id/tvTags"
+        android:layout_toLeftOf="@id/tvSave"
+        android:text="Cancel"
+        android:layout_marginRight="20dp"
         android:textSize="35sp"
-        android:layout_alignParentBottom="true"/>
+        />
 </RelativeLayout>

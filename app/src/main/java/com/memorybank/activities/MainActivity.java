@@ -31,7 +31,6 @@ public class MainActivity extends ActionBarActivity {
     public static final String TAG = "MainActivity";
     private TextView mSaveButton;
     private EditText mMemoryValueEditText;
-    private TextView mMemoriesListTextView;
     private TextView mTagsTextView;
     private ViewGroup mViewGroupPlaceholder;
     private View mInsertMemoryView;
@@ -47,7 +46,6 @@ public class MainActivity extends ActionBarActivity {
         mViewGroupPlaceholder.addView(mInsertMemoryView);
 
         mMemoryValueEditText = (EditText) findViewById(R.id.etMemoryValue);
-        mMemoriesListTextView = (TextView) findViewById(R.id.tvMemoriesList);
         mSaveButton = (TextView) findViewById(R.id.tvSave);
         mTagsTextView = (TextView) findViewById(R.id.tvTags);
         mSearchEditText = (EditText) findViewById(R.id.etMemorySearch);
@@ -82,14 +80,6 @@ public class MainActivity extends ActionBarActivity {
                 MemoriesDatabase.getInstance().saveMemory(memory);
                 mMemoryValueEditText.setText("");
                 Toast.makeText(MainActivity.this, "Saved memory to database", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mMemoriesListTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MemoriesListActivity.class);
-                MainActivity.this.startActivity(intent);
             }
         });
 

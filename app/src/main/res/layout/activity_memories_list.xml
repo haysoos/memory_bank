@@ -4,11 +4,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#EEEEEE"
     tools:context="com.memorybank.activities.MemoriesListActivity">
 
-    <ListView
-        android:id="@+id/lvMemories"
+    <android.support.v7.widget.SearchView
+        android:id="@+id/svSearchMemories"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:queryHint="Search Memories"
+        android:background="@android:drawable/dialog_holo_light_frame"/>
+
+    <ImageButton
+        android:id="@+id/ibAddNewMemory"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/fab"
+        />
+
+    <FrameLayout
+        android:id="@+id/viewGroupPlaceHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/svSearchMemories"/>
 
 </RelativeLayout>
