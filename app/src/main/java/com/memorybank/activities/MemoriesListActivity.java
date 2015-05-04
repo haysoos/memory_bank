@@ -65,8 +65,7 @@ public class MemoriesListActivity extends ActionBarActivity {
             public void onClick(View v) {
                 mViewGroupPlaceholder.removeAllViews();
                 mViewGroupPlaceholder.addView(mInsertMemoryView);
-                ObjectAnimator.ofFloat(mFloatingActionButton, View.ALPHA, 0.0f).setDuration(500).start();
-                ObjectAnimator.ofFloat(mMemorySearchView, View.ALPHA, 0.0f).setDuration(500).start();
+                animateOutObjects();
             }
         });
 
@@ -101,8 +100,7 @@ public class MemoriesListActivity extends ActionBarActivity {
                 mViewGroupPlaceholder.removeAllViews();
                 mViewGroupPlaceholder.addView(mMemoriesListView);
                 mMemoriesAdapter.changeCursor(MemoriesDatabase.getInstance().getMemories());
-                ObjectAnimator.ofFloat(mFloatingActionButton, View.ALPHA, 1.0f).setDuration(500).start();
-                ObjectAnimator.ofFloat(mMemorySearchView, View.ALPHA, 1.0f).setDuration(500).start();
+                animateInObjects();
             }
         });
 
@@ -111,8 +109,7 @@ public class MemoriesListActivity extends ActionBarActivity {
             public void onCancelClick() {
                 mViewGroupPlaceholder.removeAllViews();
                 mViewGroupPlaceholder.addView(mMemoriesListView);
-                ObjectAnimator.ofFloat(mFloatingActionButton, View.ALPHA, 1.0f).setDuration(500).start();
-                ObjectAnimator.ofFloat(mMemorySearchView, View.ALPHA, 1.0f).setDuration(500).start();
+                animateInObjects();
             }
         });
 
@@ -135,7 +132,16 @@ public class MemoriesListActivity extends ActionBarActivity {
                 return false;
             }
         });
+    }
 
+    private void animateOutObjects() {
+        ObjectAnimator.ofFloat(mFloatingActionButton, View.ALPHA, 0.0f).setDuration(500).start();
+        ObjectAnimator.ofFloat(mMemorySearchView, View.ALPHA, 0.0f).setDuration(500).start();
+    }
+
+    private void animateInObjects() {
+        ObjectAnimator.ofFloat(mFloatingActionButton, View.ALPHA, 1.0f).setDuration(500).start();
+        ObjectAnimator.ofFloat(mMemorySearchView, View.ALPHA, 1.0f).setDuration(500).start();
     }
 
     @Override

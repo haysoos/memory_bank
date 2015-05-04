@@ -34,6 +34,7 @@
         android:layout_toRightOf="@id/tvDescription"
         android:layout_alignBaseline="@id/tvDescription"
         android:layout_alignParentRight="true"
+        android:inputType="textCapSentences|textAutoCorrect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
